@@ -1,0 +1,37 @@
+[
+    {
+        "model": "levelupapi.event",
+        "pk": 1,
+        "fields": {
+            "game": 1,
+            "description": "Start your week off with Monopoly Mondays",
+            "date": "2022-05-02",
+            "time": "12:30",
+            "organizer": 1
+           
+        }
+    },
+
+        {
+        "model": "levelupapi.event",
+        "pk": 2,
+        "fields": {
+            "game": 2,
+            "description": "Showcase your DD Skills",
+            "date": "2022-05-04",
+            "time": "3:00",
+            "organizer": 1
+        }
+    },
+            {
+        "model": "levelupapi.event",
+        "pk": 3,
+        "fields": {
+            "game": 3,
+            "description": "Get your squad together for GTA",
+            "date": "2022-05-03",
+            "time": "5:00",
+            "organizer": 1
+        }
+    }
+]
