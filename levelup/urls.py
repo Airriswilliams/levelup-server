@@ -6,6 +6,8 @@ from rest_framework import routers
 from levelupapi.views import GameTypeView, EventView, GameView
 
 router = routers.DefaultRouter(trailing_slash=False)
+# here is where we regisgter and endpoint, if a request comes in for gametypes what do we want to do w/it
+# anytime a request comes in for gametypes, use GameTypeView to handle that request
 router.register(r'gametypes', GameTypeView, 'gametype')
 router.register(r'events', EventView, 'event')
 router.register(r'games', GameView, 'game')

@@ -40,5 +40,6 @@ class GameTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameType
         fields = ('id', 'label')
+        # fields = (__all__)
 # the Meta class holds the configuration for the serializer. We're telling the serializer to use the "GameType" 
 # model and to include the "id" and "label" fields
