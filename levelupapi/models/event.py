@@ -10,3 +10,16 @@ class Event(models.Model):
     time = models.TimeField()
     organizer = models.ForeignKey("gamer", on_delete=models.CASCADE)
     attendees = models.ManyToManyField(Gamer, related_name="gamers")
+    
+    @property
+    def joined(self):
+        return self.__joined
+
+    @joined.setter
+    def joined(self, value):
+        self.__joined = value
+        
+# 
+# has this user joined this event, each instance of this event, did the user join event
+# adding custom property to "Event" model class.
+    

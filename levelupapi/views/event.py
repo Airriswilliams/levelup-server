@@ -6,6 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from levelupapi.models import Event, Game
+from levelupapi.models import gamer
 from levelupapi.models.gamer import Gamer
 from django.core.exceptions import ValidationError
 from rest_framework.decorators import action
@@ -37,15 +38,24 @@ class EventView(ViewSet):
             Response -- JSON serialized list of events
         """
         events = Event.objects.all()
+        gamer = Gamer.objects.get(user=request.auth.user)
+        # instance of a gamer object, checking if the gamer apart of this event or not?
+
+        
         game = request.query_params.get('game', None)
         if game is not None:
             events = events.filter(game_id=game)
-            
         
+        for event in events:
+            event.joined = gamer in event.attendees.all()
+        # "all" method gets every gamer attending the event. The conditional,"gamer in event"
+        # "event.attendees.all()" will evaluate to True or False if the gamer is in the atendees list
         # the event variable is now a list of Event objects. adding many=true lets the serializer know
         # that a list vs. a single object is to be serialized.
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
+            
+        
     
     
     def create(self, request):
@@ -117,7 +127,7 @@ class EventSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Event
-        fields = ('id', 'game', 'description','date', 'time', 'organizer')
+        fields = ('id', 'game', 'description','date', 'time', 'organizer','attendees','joined')
         depth = 2
 # the Meta class holds the configuration for the serializer. We're telling the serializer to use the "Event" 
 # model and to include the "id", game, description, date, time and organizer fields
