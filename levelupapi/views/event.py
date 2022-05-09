@@ -8,6 +8,7 @@ from rest_framework import serializers, status
 from levelupapi.models import Event, Game
 from levelupapi.models.gamer import Gamer
 from django.core.exceptions import ValidationError
+from rest_framework.decorators import action
 
 
 
@@ -88,10 +89,29 @@ class EventView(ViewSet):
         game = Event.objects.get(pk=pk)
         game.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
-        
+    
+    @action(methods=['post'], detail=True)
+    def signup(self, request, pk):
+        """Post request for a user to sign up for an event"""
+    
+        gamer = Gamer.objects.get(user=request.auth.user)
+        event = Event.objects.get(pk=pk)
+        event.attendees.add(gamer)
+        return Response({'message': 'Gamer added'}, status=status.HTTP_201_CREATED)
+    # Using the "action" decorator turns a method into a new route. The action will accept "POST" methods
+    # and b/c "detail=TRUE" the url will include the pk. We need the pk so we will know which event the user
+    # wants to sign up for.
+    
+    @action(methods=['delete'], detail=True)
+    def leave(self, request, pk):
+        """Delete request for a user to leave an event"""
+    
+        gamer = Gamer.objects.get(user=request.auth.user)
+        event = Event.objects.get(pk=pk)
+        event.attendees.remove(gamer)
+        return Response({'message': 'Gamer removed'}, status=status.HTTP_204_NO_CONTENT)
 
-    
-    
+        
 class EventSerializer(serializers.ModelSerializer):
     """JSON serializer for events
     """
@@ -108,3 +128,6 @@ class CreateEventSerializer(serializers.ModelSerializer):
         model = Event
         fields = ('id', 'game', 'description','date', 'time', 'organizer')
         # fields = (__all__)
+
+    
+    
