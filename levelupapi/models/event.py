@@ -21,5 +21,5 @@ class Event(models.Model):
         
 # 
 # has this user joined this event, each instance of this event, did the user join event
-# adding custom property to "Event" model class.
+# adding custom property to "Event" model class. The event class list 
     

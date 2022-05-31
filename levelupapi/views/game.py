@@ -52,6 +52,10 @@ class GameView(ViewSet):
         Returns:
             Response -- JSON serialized game instance
         """
+        # who is the user being set, serializer as a variable that has a value to CreateGameSerializer
+        # is valid is making sure it's not bad data
+        # saving the created game, saving the whole object to the database and adding in gamer as well
+        # Raise_exception gives you the warning if you provide incorrect data
         gamer = Gamer.objects.get(user=request.auth.user)
         serializer = CreateGameSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
